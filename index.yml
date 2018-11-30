@@ -1,0 +1,154 @@
+version: 1.0.0
+requires:
+  fbl: '>=1.2.3'
+  applications:
+   - yarn
+
+pipeline:
+  '--':
+    - ctx:
+        '$':
+          inline:
+            fbl: 1.2.3
+
+    <$ if (!ctx.name) { $>
+    - prompt:
+        message: 'Project name:'
+        default: <%- $.require('path').basename(cwd) %>
+        assignResponseTo:
+          ctx: $.name
+        schema:
+          type: string
+          maxLength: 214
+          minLength: 1
+          pattern: "^(?:@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$"
+    <$ } $>
+
+    <$ if (!ctx.license) { $>
+    - prompt:
+        message: 'License:'
+        default: MIT
+        assignResponseTo:
+          ctx: $.license
+    <$ } $>
+
+    <$ if (!ctx.description) { $>
+    - prompt:
+        message: 'Description:'
+        default: ''
+        assignResponseTo:
+          ctx: $.description
+    <$ } $>
+
+    <$ if (!ctx.author) { $>
+    - prompt:
+        message: 'Author:'
+        assignResponseTo:
+          ctx: $.author
+    <$ } $>
+
+    <$ if (!ctx.destination) { $>
+    - prompt:
+        message: 'Location:'
+        default: <%- cwd %>
+        assignResponseTo:
+          ctx: $.destination
+    <$ } $>
+
+    <$ if (!ctx.nodemon) { $>
+    - confirm:
+        message: 'Add nodemon support?'
+        default: true
+        assignResponseTo:
+          ctx: $.nodemon
+    <$ } $>
+
+    <$ if (!ctx.docker) { $>
+    - confirm:
+        message: 'Add docker support?'
+        default: true
+        assignResponseTo:
+          ctx: $.docker
+    <$ } $>
+
+    <$ if (!ctx.gitInit) { $>
+    - confirm:
+        message: 'Need to run git init?'
+        default: false
+        assignResponseTo:
+          ctx: $.gitInit
+    <$ } $>
+
+    - '||':
+        <$ [
+          'src',
+          'test',
+          '.commitlintrc.yml',
+          '.czrc',
+          '.dockerignore',
+          '.editorconfig',
+          '.gitignore',
+          '.huskyrc.yml',
+          '.lintstagedrc.yml',
+          '.npmignore',
+          '.nvmrc',
+          '.prettierignore',
+          '.prettierrc.yml',
+          'tsconfig.json',
+          'tsconfig.json',
+          'tslint.json',
+          'yarn.lock',
+        ].forEach(path => { $>
+        - cp:
+            from: templates/<$- path $>
+            to: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/
+        <$ }); $>
+
+        <$ if (ctx.docker) {
+          [
+          'Dockerfile',
+          'docker-compose.yml',
+        ].forEach(path => { $>
+        - '->':
+            contentFromFile: templates/<$- path $>
+            path: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/<$- path $>
+        <$ });} $>
+
+        <$ if (ctx.docker) {
+          [
+          'nodemon.json',
+        ].forEach(path => { $>
+        - cp:
+            from: templates/<$- path $>
+            to: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/
+        <$ });} $>
+
+        <$ [
+          'LICENSE',
+          'package.json'
+          'README.md'
+        ].forEach(path => { $>
+        - '->':
+            contentFromFile: templates/<$- path $>
+            path: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/<$- path $>
+        <$ }); $>
+
+    - '--':
+      <$ if (ctx.gitInit) { $>
+      - exec:
+          command: git
+          args:
+            - init
+          wd: $ref:ctx.destination
+          options:
+            verbose: true
+      <$ } $>
+      - exec:
+          command: yarn
+          args:
+            - install
+          wd: <%- ctx.destination %>
+          options:
+            verbose: true
+
+
