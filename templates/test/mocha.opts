@@ -1,0 +1,4 @@
+--require source-map-support/register
+test/**/*.ts
+--reporter mochawesome
+--reporter-options output=coverage/testReport.html

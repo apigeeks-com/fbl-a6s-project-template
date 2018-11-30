@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  '<%- ctx.name %>':
+    build: .
+    networks:
+      default:
+    restart: always
+    ports:
+     - "8080:8080"
+    environment:
+      - NODE_ENV=production
+
+networks:
+  default:
+    external:
+      name: shared
