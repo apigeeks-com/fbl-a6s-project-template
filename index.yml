@@ -71,14 +71,6 @@ pipeline:
           ctx: $.docker
     <$ } $>
 
-    <$ if (!ctx.gitInit) { $>
-    - confirm:
-        message: 'Need to run git init?'
-        default: false
-        assignResponseTo:
-          ctx: $.gitInit
-    <$ } $>
-
     <$ if (!ctx.test) { $>
     - confirm:
         message: 'Setup test?'
@@ -86,6 +78,14 @@ pipeline:
         assignResponseTo:
           ctx: $.test
     <$ } $>
+
+    <$ if (!ctx.gitInit) { $>
+        - confirm:
+            message: 'Need to run git init?'
+            default: false
+            assignResponseTo:
+              ctx: $.gitInit
+        <$ } $>
 
     - '||':
         <$ [
