@@ -52,13 +52,17 @@
     "nodemon": "^1.18.7",
     "npm-run-all": "^4.1.5",
     <$ } $>
+    <$ if (ctx.test) { $>
     "nyc": "^13.1.0",
+    <$ } $>
     "prettier": "^1.15.2",
     <$ if (ctx.test) { $>
     "source-map-support": "^0.5.9",
     <$ } $>
     "trash-cli": "^1.4.0",
+    <$ if (ctx.test) { $>
     "ts-node": "^7.0.1",
+    <$ } $>
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-immutable": "^5.0.0",
