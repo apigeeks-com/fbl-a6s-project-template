@@ -4,14 +4,18 @@
   "description": "<%- ctx.description %>",
   "main": "dist/index.js",
   "scripts": {
+    <$ if (ctx.typescript) { $>
     "start": "node ./dist/index.js",
     "build": "npm run clean && tsc -p tsconfig.json",
+    <$ } $>
     <$ if (ctx.nodemon) { $>
     "dev": "npm-run-all -s build -p watch:*",
     "watch:node": "nodemon ./dist/index.js",
     "watch:ts": "tsc -p tsconfig.json --watch",
     <$ } $>
+    <$ if (ctx.typescript) { $>
     "clean": "trash dist",
+    <$ } $>
     "lint:fix": "prettier \"src/**/*.ts\" --write && tslint --fix --project .",
     "lint": "tslint --project . && prettier src/**/*.ts --list-different",
     <$ if (ctx.docker) { $>
@@ -59,14 +63,18 @@
     <$ if (ctx.test) { $>
     "source-map-support": "^0.5.9",
     <$ } $>
+    <$ if (ctx.typescript) { $>
     "trash-cli": "^1.4.0",
+    <$ } $>
     <$ if (ctx.test) { $>
     "ts-node": "^7.0.1",
     <$ } $>
+    <$ if (ctx.typescript) { $>
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-immutable": "^5.0.0",
     "typescript": "^3.1.6",
+    <$ } $>
     "yaml-lint": "^1.2.4"
   },
   "keywords": [

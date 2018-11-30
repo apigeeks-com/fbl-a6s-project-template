@@ -55,6 +55,14 @@ pipeline:
           ctx: $.destination
     <$ } $>
 
+    <$ if (!ctx.typescript) { $>
+    - confirm:
+        message: 'Setup typescript?'
+        default: true
+        assignResponseTo:
+          ctx: $.typescript
+    <$ } $>
+
     <$ if (!ctx.nodemon) { $>
     - confirm:
         message: 'Add nodemon support?'
@@ -102,7 +110,6 @@ pipeline:
           '.prettierignore',
           '.prettierrc.yml',
           'tsconfig.json',
-          'tsconfig.json',
           'tslint.json',
           'yarn.lock',
         ].forEach(path => { $>
@@ -124,7 +131,17 @@ pipeline:
         <$ if (ctx.test) {
           [
           'test',
-          'docker-compose.yml',
+        ].forEach(path => { $>
+        - cp:
+            from: templates/<$- path $>
+            to: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/
+        <$ });} $>
+
+        <$ if (ctx.typescript) {
+          [
+          '.nvmrc',
+          'tsconfig.json',
+          'tslint.json',
         ].forEach(path => { $>
         - cp:
             from: templates/<$- path $>
