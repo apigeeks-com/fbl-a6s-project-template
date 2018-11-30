@@ -18,8 +18,10 @@
     "docker:cleanup": "docker-compose rm -f",
     "docker:run": "docker-compose -f docker-compose.yml up --build",
     <$ } $>
-    "commit": "npx git-cz",
-    "test": "nyc --reporter=html --reporter=text mocha -r ts-node/register --exit"
+    <$ if (ctx.test) { $>
+    "test": "nyc --reporter=html --reporter=text mocha -r ts-node/register --exit",
+    <$ } $>
+    "commit": "npx git-cz"
   },
   "author": "<%- ctx.author %>",
   "license": "<%- ctx.license %>",
@@ -27,26 +29,34 @@
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
+    <$ if (ctx.test) { $>
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
+    <$ } $>
     "@types/node": "^10.12.10",
+    <$ if (ctx.test) { $>
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    <$ } $>
     "commitizen": "^3.0.5",
     "conventional-changelog-cli": "^2.0.11",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.2.0",
     "jsonlint": "^1.6.3",
     "lint-staged": "^8.1.0",
+    <$ if (ctx.test) { $>
     "mocha": "^5.2.0",
     "mochawesome": "^3.1.1",
+    <$ } $>
     <$ if (ctx.nodemon) { $>
     "nodemon": "^1.18.7",
     "npm-run-all": "^4.1.5",
     <$ } $>
     "nyc": "^13.1.0",
     "prettier": "^1.15.2",
+    <$ if (ctx.test) { $>
     "source-map-support": "^0.5.9",
+    <$ } $>
     "trash-cli": "^1.4.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

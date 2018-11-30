@@ -79,10 +79,17 @@ pipeline:
           ctx: $.gitInit
     <$ } $>
 
+    <$ if (!ctx.test) { $>
+    - confirm:
+        message: 'Setup test?'
+        default: false
+        assignResponseTo:
+          ctx: $.test
+    <$ } $>
+
     - '||':
         <$ [
           'src',
-          'test',
           '.commitlintrc.yml',
           '.czrc',
           '.dockerignore',
@@ -112,6 +119,16 @@ pipeline:
         - '->':
             contentFromFile: templates/<$- path $>
             path: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/<$- path $>
+        <$ });} $>
+
+        <$ if (ctx.test) {
+          [
+          'test',
+          'docker-compose.yml',
+        ].forEach(path => { $>
+        - cp:
+            from: templates/<$- path $>
+            to: <%- $.fs.getAbsolutePath(ctx.destination, cwd) %>/
         <$ });} $>
 
         <$ if (ctx.nodemon) {
