@@ -49,7 +49,7 @@ pipeline:
 
     <$ if (!ctx.destination) { $>
     - prompt:
-        message: 'Location:'
+        message: 'Project folder:'
         default: <%- cwd %>
         assignResponseTo:
           ctx: $.destination
@@ -57,7 +57,7 @@ pipeline:
 
     <$ if (!ctx.typescript) { $>
     - confirm:
-        message: 'Setup typescript?'
+        message: 'Is it a TypeScript project?'
         default: true
         assignResponseTo:
           ctx: $.typescript
@@ -66,7 +66,7 @@ pipeline:
     <$ if (ctx.typescript) { $>
       <$ if (!ctx.nodemon) { $>
     - confirm:
-        message: 'Add nodemon support?'
+        message: 'Do you want to add "nodemon" to monitor source changes for development purposes?'
         default: true
         assignResponseTo:
           ctx: $.nodemon
@@ -74,7 +74,7 @@ pipeline:
 
       <$ if (!ctx.docker) { $>
     - confirm:
-        message: 'Add docker support?'
+        message: 'Do you want to add Docker support?'
         default: true
         assignResponseTo:
           ctx: $.docker
@@ -82,7 +82,7 @@ pipeline:
 
       <$ if (!ctx.test) { $>
     - confirm:
-        message: 'Setup test?'
+        message: 'Do you want to setup mocha tests?'
         default: false
         assignResponseTo:
           ctx: $.test
@@ -92,7 +92,7 @@ pipeline:
 
     <$ if (!ctx.gitInit) { $>
     - confirm:
-        message: 'Need to run git init?'
+        message: 'Do you want to init Git repository for the project?'
         default: false
         assignResponseTo:
           ctx: $.gitInit
