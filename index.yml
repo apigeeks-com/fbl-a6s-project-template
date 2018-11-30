@@ -88,16 +88,15 @@ pipeline:
     <$ } $>
 
     <$ if (!ctx.gitInit) { $>
-        - confirm:
-            message: 'Need to run git init?'
-            default: false
-            assignResponseTo:
-              ctx: $.gitInit
-        <$ } $>
+    - confirm:
+        message: 'Need to run git init?'
+        default: false
+        assignResponseTo:
+          ctx: $.gitInit
+    <$ } $>
 
     - '||':
         <$ [
-          'src',
           '.commitlintrc.yml',
           '.czrc',
           '.dockerignore',
@@ -139,6 +138,7 @@ pipeline:
 
         <$ if (ctx.typescript) {
           [
+          'src',
           '.nvmrc',
           'tsconfig.json',
           'tslint.json',
@@ -160,7 +160,7 @@ pipeline:
         <$ [
           'LICENSE',
           'package.json',
-          'README.md'
+          'README.md',
         ].forEach(path => { $>
         - '->':
             contentFromFile: templates/<$- path $>
