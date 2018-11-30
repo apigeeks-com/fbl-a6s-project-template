@@ -20,9 +20,16 @@ You can also pass all the options into command itself to avoid answering prompts
 
 ```bash
 fbl \
- -c \$.name=plugin_name \
- -c \$.author=AuthorName \
- -c \$.license=MIT \ 
+ -c \$.name=project_name \
+ -c \$.description=project_description \
+ -c \$.author=AuthorName \ 
+ -c \$.license=MIT \
  -c \$.destination=/path/to/plugin_directory \
+ -c \$.typescript=false \
+ -c \$.nodemon=false \ 
+ -c \$.docker=false \ 
+ -c \$.docker=false \ 
+ -c \$.test=false \ 
+ -c \$.gitInit=false \ 
  https://github.com/apigeeks-com/fbl-a6s-project-template/archive/master.tar.gz
 ```
