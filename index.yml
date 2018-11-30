@@ -63,28 +63,31 @@ pipeline:
           ctx: $.typescript
     <$ } $>
 
-    <$ if (!ctx.nodemon) { $>
+    <$ if (ctx.typescript) { $>
+      <$ if (!ctx.nodemon) { $>
     - confirm:
         message: 'Add nodemon support?'
         default: true
         assignResponseTo:
           ctx: $.nodemon
-    <$ } $>
+      <$ } $>
 
-    <$ if (!ctx.docker) { $>
+      <$ if (!ctx.docker) { $>
     - confirm:
         message: 'Add docker support?'
         default: true
         assignResponseTo:
           ctx: $.docker
-    <$ } $>
+      <$ } $>
 
-    <$ if (!ctx.test) { $>
+      <$ if (!ctx.test) { $>
     - confirm:
         message: 'Setup test?'
         default: false
         assignResponseTo:
           ctx: $.test
+      <$ } $>
+
     <$ } $>
 
     <$ if (!ctx.gitInit) { $>
