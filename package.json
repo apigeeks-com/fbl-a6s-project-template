@@ -1,0 +1,27 @@
+{
+  "name": "fbl-a6s-project-template",
+  "version": "1.0.0",
+  "description": "FireBlink Logistic's plugin project generator.",
+  "main": "index.js",
+  "scripts": {
+    "commit": "npx git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apigeeks-com/fbl-a6s-project-template.git"
+  },
+  "author": "Igor Ognichenko <igor.ognichenko@fireblink.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigeeks-com/fbl-a6s-project-template/issues"
+  },
+  "homepage": "https://github.com/apigeeks-com/fbl-a6s-project-template#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^7.2.1",
+    "@commitlint/config-conventional": "^7.1.2",
+    "commitizen": "^3.0.5",
+    "conventional-changelog-cli": "^2.0.11",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^1.2.0"
+  }
+}
