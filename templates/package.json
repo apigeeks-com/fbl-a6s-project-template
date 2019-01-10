@@ -15,9 +15,10 @@
     <$ } $>
     <$ if (ctx.typescript) { $>
     "clean": "trash dist",
-    <$ } $>
     "lint:fix": "prettier \"src/**/*.ts\" --write && tslint --fix --project .",
     "lint": "tslint --project . && prettier src/**/*.ts --list-different",
+    <$ } $>
+    "prettier": "prettier * --write",
     <$ if (ctx.docker) { $>
     "docker:cleanup": "docker-compose rm -f",
     "docker:run": "docker-compose -f docker-compose.yml up --build",
@@ -37,7 +38,9 @@
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
     <$ } $>
+    <$ if (ctx.typescript) { $>
     "@types/node": "^10.12.10",
+    <$ } $>
     <$ if (ctx.test) { $>
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
