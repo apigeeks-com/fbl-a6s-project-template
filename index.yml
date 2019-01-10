@@ -63,32 +63,7 @@ pipeline:
           ctx: $.typescript
     <$ } $>
 
-    <$ if (ctx.typescript) { $>
-      <$ if (!ctx.nodemon) { $>
-    - confirm:
-        message: 'Do you want to add "nodemon" to monitor source changes for development purposes?'
-        default: true
-        assignResponseTo:
-          ctx: $.nodemon
-      <$ } $>
-
-      <$ if (!ctx.docker) { $>
-    - confirm:
-        message: 'Do you want to add Docker support?'
-        default: true
-        assignResponseTo:
-          ctx: $.docker
-      <$ } $>
-
-      <$ if (!ctx.test) { $>
-    - confirm:
-        message: 'Do you want to setup mocha tests?'
-        default: false
-        assignResponseTo:
-          ctx: $.test
-      <$ } $>
-
-    <$ } $>
+    - '@': typescript.yml
 
     <$ if (!ctx.gitInit) { $>
     - confirm:
@@ -106,14 +81,13 @@ pipeline:
           '.editorconfig',
           '.gitignore',
           '.huskyrc.yml',
+          '.prettierignore',
           '.lintstagedrc.yml',
           '.npmignore',
           '.nvmrc',
-          '.prettierignore',
           '.prettierrc.yml',
           'tsconfig.json',
           'tslint.json',
-          'yarn.lock',
         ].forEach(path => { $>
         - cp:
             from: templates/<$- path $>
@@ -161,7 +135,6 @@ pipeline:
         <$ });} $>
 
         <$ [
-          'LICENSE',
           'package.json',
           'README.md',
         ].forEach(path => { $>
@@ -180,10 +153,19 @@ pipeline:
           options:
             verbose: true
       <$ } $>
+
       - exec:
           command: yarn
           args:
             - install
+          wd: <%- ctx.destination %>
+          options:
+            verbose: true
+
+      - exec:
+          command: yarn
+          args:
+            - prettier
           wd: <%- ctx.destination %>
           options:
             verbose: true

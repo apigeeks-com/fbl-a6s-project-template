@@ -1,0 +1,31 @@
+pipeline:
+  '--':
+    - ctx:
+        '$':
+          inline:
+            fbl: 1.2.3
+  <$ if (ctx.typescript) { $>
+    <$ if (!ctx.nodemon) { $>
+    - confirm:
+        message: 'Do you want to add "nodemon" to monitor source changes for development purposes?'
+        default: true
+        assignResponseTo:
+          ctx: $.nodemon
+      <$ } $>
+
+      <$ if (!ctx.docker) { $>
+    - confirm:
+        message: 'Do you want to add Docker support?'
+        default: true
+        assignResponseTo:
+          ctx: $.docker
+      <$ } $>
+
+      <$ if (!ctx.test) { $>
+    - confirm:
+        message: 'Do you want to setup mocha tests?'
+        default: false
+        assignResponseTo:
+          ctx: $.test
+    <$ } $>
+  <$ } $>
