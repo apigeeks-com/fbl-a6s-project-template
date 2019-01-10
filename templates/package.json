@@ -81,8 +81,5 @@
     "yaml-lint": "^1.2.4"
   },
   "keywords": [
-    "a6s",
-    "apigeeks",
-    "<%- ctx.name %>"
   ]
 }

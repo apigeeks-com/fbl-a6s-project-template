@@ -135,7 +135,6 @@ pipeline:
         <$ });} $>
 
         <$ [
-          'LICENSE',
           'package.json',
           'README.md',
         ].forEach(path => { $>
